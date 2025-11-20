@@ -1,6 +1,7 @@
-import pygame
 import random
 import sys
+
+import pygame
 
 # ---------------------------
 # Konfigurasi utama
@@ -12,15 +13,16 @@ FPS = 12  # Kecepatan permainan (semakin besar semakin cepat)
 # Warna
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-RED   = (255, 0, 0)
+RED = (255, 0, 0)
 GREEN = (0, 200, 0)
-GRAY  = (40, 40, 40)
+GRAY = (40, 40, 40)
 
 # Arah gerak (dx, dy) berbasis grid BLOCK_SIZE
-UP    = (0, -BLOCK_SIZE)
-DOWN  = (0,  BLOCK_SIZE)
-LEFT  = (-BLOCK_SIZE, 0)
-RIGHT = ( BLOCK_SIZE, 0)
+UP = (0, -BLOCK_SIZE)
+DOWN = (0, BLOCK_SIZE)
+LEFT = (-BLOCK_SIZE, 0)
+RIGHT = (BLOCK_SIZE, 0)
+
 
 # ---------------------------
 # Utilitas
@@ -46,9 +48,11 @@ def random_food_position(snake_body):
 
     return random.choice(empty_cells)
 
+
 def is_opposite(dir_a, dir_b):
     """Cek apakah dua arah saling berlawanan."""
     return dir_a[0] == -dir_b[0] and dir_a[1] == -dir_b[1]
+
 
 # ---------------------------
 # Game
@@ -56,7 +60,7 @@ def is_opposite(dir_a, dir_b):
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    pygame.display.set_caption('Game Snake - Pygame')
+    pygame.display.set_caption("Game Snake - Pygame")
     clock = pygame.time.Clock()
     font_small = pygame.font.SysFont(None, 24)
     font_large = pygame.font.SysFont(None, 48)
@@ -73,21 +77,31 @@ def main():
             pygame.draw.line(screen, GRAY, (0, y), (SCREEN_WIDTH, y))
 
     def draw_snake(snake_body):
-        for (x, y) in snake_body:
+        for x, y in snake_body:
             pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, BLOCK_SIZE, BLOCK_SIZE))
 
     def draw_food(food_pos):
         if food_pos is not None:
-            pygame.draw.rect(screen, RED, pygame.Rect(food_pos[0], food_pos[1], BLOCK_SIZE, BLOCK_SIZE))
+            pygame.draw.rect(
+                screen,
+                RED,
+                pygame.Rect(food_pos[0], food_pos[1], BLOCK_SIZE, BLOCK_SIZE),
+            )
 
     def game_over_screen(score):
         screen.fill(BLACK)
         msg1 = font_large.render("Game Over", True, RED)
         msg2 = font_small.render("Tekan R untuk Restart, Q untuk Keluar", True, WHITE)
         msg3 = font_small.render(f"Skor akhir: {score}", True, WHITE)
-        screen.blit(msg1, (SCREEN_WIDTH // 2 - msg1.get_width() // 2, SCREEN_HEIGHT // 2 - 60))
-        screen.blit(msg3, (SCREEN_WIDTH // 2 - msg3.get_width() // 2, SCREEN_HEIGHT // 2))
-        screen.blit(msg2, (SCREEN_WIDTH // 2 - msg2.get_width() // 2, SCREEN_HEIGHT // 2 + 30))
+        screen.blit(
+            msg1, (SCREEN_WIDTH // 2 - msg1.get_width() // 2, SCREEN_HEIGHT // 2 - 60)
+        )
+        screen.blit(
+            msg3, (SCREEN_WIDTH // 2 - msg3.get_width() // 2, SCREEN_HEIGHT // 2)
+        )
+        screen.blit(
+            msg2, (SCREEN_WIDTH // 2 - msg2.get_width() // 2, SCREEN_HEIGHT // 2 + 30)
+        )
         pygame.display.flip()
 
         # Tunggu input untuk restart/keluar
@@ -149,8 +163,10 @@ def main():
 
         # Cek tabrakan dinding
         if (
-            new_head[0] < 0 or new_head[0] >= SCREEN_WIDTH or
-            new_head[1] < 0 or new_head[1] >= SCREEN_HEIGHT
+            new_head[0] < 0
+            or new_head[0] >= SCREEN_WIDTH
+            or new_head[1] < 0
+            or new_head[1] >= SCREEN_HEIGHT
         ):
             game_over_screen(score)
             # Reset permainan
@@ -206,6 +222,7 @@ def main():
         clock.tick(FPS)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()
